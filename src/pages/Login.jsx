@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -21,6 +22,8 @@ const Login = () => {
     console.log(data);
     toast("Login successful!");
   };
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   return (
     <div className="h-screen w-screen flex items-center justify-center">
@@ -57,6 +60,7 @@ const Login = () => {
             <Button type="submit" className="w-full">Login</Button>
           </form>
         </Form>
+        <Button variant="outline" onClick={() => navigate(-1)} className="w-full mt-4">Go Back</Button> {/* Add Go Back button */}
       </div>
     </div>
   );
