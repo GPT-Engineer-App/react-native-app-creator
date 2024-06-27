@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -23,7 +25,19 @@ const Login = () => {
     toast("Login successful!");
   };
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
+      toast("Google login successful!");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast("Google login failed!");
+    }
+  };
 
   return (
     <div className="h-screen w-screen flex items-center justify-center">
@@ -60,7 +74,8 @@ const Login = () => {
             <Button type="submit" className="w-full">Login</Button>
           </form>
         </Form>
-        <Button variant="outline" onClick={() => navigate(-1)} className="w-full mt-4">Go Back</Button> {/* Add Go Back button */}
+        <Button variant="outline" onClick={handleGoogleLogin} className="w-full mt-4">Login with Google</Button>
+        <Button variant="outline" onClick={() => navigate(-1)} className="w-full mt-4">Go Back</Button>
       </div>
     </div>
   );
